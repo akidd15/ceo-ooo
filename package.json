@@ -10,7 +10,6 @@
     "mysql2": "^3.6.1",
     "nodemon": "^3.0.1",
     "require-sql": "^1.0.0"
-   
   },
   "devDependencies": {
     "sequelize-cli": "^6.6.1"
