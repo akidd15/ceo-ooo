@@ -50,6 +50,7 @@ async function menu() {
         viewAllEmployees();
     }
 
+    
 
     if (options === "Add a department") {
 
@@ -162,13 +163,8 @@ async function menu() {
                     } catch (err) {
                         console.error(err);
                     }
-                } else {
-                    console.log("Cannot add new employee")
-                }
-            });
-
-        if (options === "Update an employee role") {
-
+                } else 
+            if (options === "Update employee role") {
             const updateEmployeeRole = async () => {
                 inquirer.prompt([
                     {
@@ -192,20 +188,23 @@ async function menu() {
                         } else {
                             console.log("Employee not found or update failed.");
                         }
+                        displayUpdatedEmployee();
+                        menu();
                     } catch (err) {
                         console.error(err);
-
+                        updateEmployeeRole();
+                        
                     }
-
-
-                    //  Call your menu or displayEmployeeTable function to go back to the main menu
-                    menu();
+                
                 });
-            }
-        };
+            };
+        updateEmployeeRole();
+        menu();
+    }
+        })}
     };
 
-}
+
 
 
 
@@ -274,10 +273,10 @@ const updateEmployeeRole = async () => {
     let sql = `SELECT employee_role FROM employee`
     const data = await db.promise().query(sql)
     console.table(data[0])
+    updateEmployeeRole();
     menu();
 }
 
 
 
 menu();
-
