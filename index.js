@@ -52,7 +52,30 @@ async function menu() {
 
 
     if (options === "Add a department") {
-        addADepartment();
+      
+         inquirer.prompt([
+            {
+                type: "input",
+                name: "newDepartment",
+                message: "Input a new Department"
+
+
+            }
+        ])
+        .then(async (Department) => {
+            if (Department.newDepartment) {
+       const sql = `INSERT INTO department (department_name) values (?)`;
+       try {
+        const [answers] = await db.promise().query(sql, [Department.newDepartment]);
+        console.log("New Department added!");
+        displayDepartmentTable();
+       } catch (err) {
+        console.error(err);
+       }
+       } else {
+        console.log("Department name cannot be empty")
+       }
+       });
     }
 
 
@@ -71,8 +94,8 @@ async function menu() {
     }
 
 }
- //view all departments
-const viewAllDepartments = async () => {
+//view all departments
+const displayDepartmentTable = async () => {
     let sql = `SELECT department.id AS id, department.department_name AS department FROM department`;
     const data = await db.promise().query(sql)
     console.table(data[0])
@@ -94,32 +117,33 @@ const viewAllEmployees = async () => {
 }
 
 // const addADepartment = async () => {
-//     let sql = 
+//     let sql = `INSERT INTO department.department_name AS department.name`
 //     const data = await db.promise().query(sql)
 //     console.table(data[0])
 //     menu();
 // }
 
-// const addARole = async () => {
-//     let sql = 
-//     const data = await db.promise().query(sql)
-//     console.table(data[0])
-//     menu();
-// }
+const addARole = async () => {
+    let sql = `SELECT role_id FROM department_role`
+     const data = await db.promise().query(sql)
+    console.table(data[0])
+    menu();
+}
 
-// const addAnEmployee = async () => {
-//     let sql = `UPDATE employee SET(first_name, last_name, role_id, manager_id)`
-//     const data = await db.promise().query(sql)
-//     console.table(data[0])
-//     menu();
-// }
+const addAnEmployee = async () => {
+    let sql = `SELECT id,first_name, last_name,FROM employee`
+    const data = await db.promise().query(sql)
+    console.table(data[0])
+    menu();
+}
 
-// const updateAnEmployeeRole = async () => {
-//     let sql = 
-//     const data = await db.promise().query(sql)
-//     console.table(data[0])
-//     menu();
-// }
+const updateAnEmployeeRole = async () => {
+    let sql = `SELECT employee_role FROM employee`
+    const data = await db.promise().query(sql)
+    console.table(data[0])
+    menu();
+}
+
 
 
 menu();
